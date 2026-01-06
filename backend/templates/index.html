@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form class="search">
+    <input name="q" placeholder="Пошук">
+    <button>🔍</button>
+</form>
+
+<div class="categories">
+    <a href="/">Усі</a>
+    <a href="?category=plants">Рослини</a>
+    <a href="?category=flowers">Квіти</a>
+    <a href="?category=cactus">Кактуси</a>
+    <a href="?category=soil">Ґрунти</a>
+    <a href="?category=pots">Вазони</a>
+    <a href="?category=decor">Декор</a>
+</div>
+
+<div class="grid">
+{% for p in products %}
+<div class="card">
+    <img src="{{ url_for('static', filename='images/' + p.image) }}">
+    <h3>{{ p.name }}</h3>
+    <p>{{ p.desc }}</p>
+    <b>{{ p.price }} грн</b>
+    <a class="btn" href="/add_to_cart/{{ p.id }}">У кошик</a>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}

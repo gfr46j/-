@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <!-- Load the Telegram Library -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!-- Turn of debug -->
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
+    {# load TG theme values or use previous from csv #}
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+
+        const themeParams = window.Telegram.WebApp.themeParams;
+        const defaults = {
+            'bg_color': '#f4f6f4',
+            'text_color': '#000000',
+            'link_color': '#2e7d32',
+            'button_color': '#2e7d32',
+            'button_text_color': '#ffffff',
+            'header_bg_color': '#2e7d32',
+            'section_bg_color': '#ffffff',
+            'section_header_text_color': '#2e7d32',
+            'subtitle_text_color': '#555555'
+        };
+
+        Object.entries(defaults).forEach(([key, defaultValue]) => {
+            const tgValue = themeParams[key];
+            const value = (tgValue && tgValue !== '#00000000') ? tgValue : defaultValue;
+            document.documentElement.style.setProperty(`--tg-${key}`, value);
+        });
+    </script>
+
+    {# add TG user data #}
+    {# Display user   #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.Telegram?.WebApp) {
+                const tg = window.Telegram.WebApp;
+                tg.ready();
+
+                const user = tg.initDataUnsafe?.user;
+                const userNameEl = document.querySelector('.user-name');
+                if (userNameEl && user?.first_name) {
+                    userNameEl.textContent = user.first_name;
+                } else {
+                    userNameEl.textContent = 'Гість';
+                }
+            }
+        });
+    </script>
+    {# Automatically add it to all forms  #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tg = window.Telegram.WebApp;
+            tg.ready();
+
+            document.querySelectorAll('form').forEach(form => {
+                let hiddenField = form.querySelector('input[name="tg_init_data"]');
+                if (!hiddenField) {
+                    hiddenField = document.createElement('input');
+                    hiddenField.type = 'hidden';
+                    hiddenField.name = 'tg_init_data';
+                    form.appendChild(hiddenField);
+                }
+                hiddenField.value = tg.initData;
+            });
+        });
+    </script>
+
+    <meta charset="UTF-8">
+    <title>Магазин рослин</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+    <h1>🌿 Магазин рослин</h1>
+    <p class="user-name">{{ user }}</p>
+    <nav>
+        <a href="/">Каталог</a>
+        <a href="/cart">Кошик</a>
+        <a href="/history">Історія</a>
+        <a href="/add_product">Додати товар</a>
+    </nav>
+</header>
+
+<main>
+{% block content %}{% endblock %}
+</main>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Кошик</h2>
+
+{% for p in items %}
+<div class="cart-item">
+    <img src="{{ url_for('static', filename='images/' + p.image) }}">
+    {{ p.name }} — {{ p.price }} грн
+    <a href="/remove/{{ p.id }}">❌</a>
+</div>
+{% endfor %}
+
+<a class="btn" href="/buy">Купити</a>
+<a class="btn" href="/">Повернутись</a>
+{% endblock %}
