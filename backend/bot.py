@@ -8,11 +8,7 @@ load_dotenv()
 
 
 TOKEN = os.environ['TELEGRAM_TOKEN']
-NEWS_SOURCES = {
-    "Dotesports": "https://dotesports.com/feed",
-    "EsportsInsider": "https://esportsinsider.com/feed",
-    "CybersportUA": "https://cybersport.ua/feed",
-}
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Привіт 👋!\n"
@@ -36,3 +32,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
